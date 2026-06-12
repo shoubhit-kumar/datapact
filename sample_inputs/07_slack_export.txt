@@ -1,0 +1,67 @@
+SLACK EXPORT — #data-engineering channel
+Exported: 2025-03-01
+Workspace: CityGov IT
+
+================================================================
+
+[2024-11-12 10:23] Ramesh Iyer (DBA)
+@channel heads up — we found that inspection_records.created_by is sometimes
+the inspector's name (free text) and sometimes their emp_code. Whoever is
+building the DQ pipeline, don't assume it's always formatted. It's essentially
+an audit field, not a join key. Don't use it for anything relational.
+
+[2024-11-12 10:45] Priya Nair
+Thanks Ramesh. Adding to the known issues doc.
+Also — for anyone wondering, owner_contact in inspection_sites was SUPPOSED
+to be phone only but someone decided to put emails in there too about 2 years ago.
+We're going to add a separate owner_email column in the next sprint but for now
+treat owner_contact as "phone OR email, string, no format guarantee"
+
+[2024-11-12 11:02] Arun Dev (Data Eng)
+@Priya Nair noted. Also flagging — area_sqft has some negative values.
+Found 3 records. Assuming data entry error. Should be > 0 always right?
+
+[2024-11-12 11:08] Priya Nair
+Yes, area_sqft must be positive. Zero is also invalid — every registered site
+has a physical area. Flag anything <= 0.
+
+[2024-11-12 11:15] Arun Dev
+Got it. Also constructed_yr — how far back can it go? Found some with 1887.
+
+[2024-11-12 11:22] Ramesh Iyer
+Technically valid — some heritage buildings are that old. But anything before
+1850 is suspect. And anything in the future (> current year) is definitely wrong.
+So valid range: 1850 to current year.
+
+[2024-11-14 09:30] Kavya QA
+QA flag — duration_hrs in inspection_records. We found values of 0.0 and also
+values above 24. An inspection cannot take 0 hours or more than a full day.
+Realistic range is 0.5 to 12 hours based on historical data.
+
+[2024-11-14 09:45] Priya Nair
+Agreed. duration_hrs should be between 0.5 and 12.0. Anything outside
+that is a data entry error. Please add to DQ rules.
+
+[2024-11-14 10:01] Arun Dev
+What about findings_count? Can it be 0?
+
+[2024-11-14 10:09] Priya Nair
+Yes — a PASS inspection with 0 findings is valid. But a FAIL must have
+findings_count >= 1. And critical_findings must always be <= findings_count.
+That's a hard rule.
+
+[2025-01-20 14:30] Arun Dev
+Reminder to team — geo_lat and geo_long are ONLY populated for inspections
+done via the mobile app (launched Jan 2024). For all web/manual entries they
+will be NULL. Do NOT flag NULL geo fields as a DQ issue for pre-2024 records
+or web-submitted records. Only flag if mobile app inspection has NULL geo.
+
+[2025-01-20 14:55] Kavya QA
+Also — followup_deadline logic. If followup_required = 1, then followup_deadline
+should be within 30 days of inspection_date. We have ~445 records where
+followup_deadline is set but followup_required = 0. That's the DEV-4821 bug.
+Don't create a DQ rule that breaks on those historical records — scope it to
+records created after 2024-06-01 (when the fix went in).
+
+================================================================
+END OF EXPORT

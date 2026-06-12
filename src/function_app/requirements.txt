@@ -1,0 +1,8 @@
+azure-functions
+pyodbc
+azure-servicebus
+azure-storage-blob
+azure-ai-formrecognizer
+azure-search-documents
+requests
+pyyaml

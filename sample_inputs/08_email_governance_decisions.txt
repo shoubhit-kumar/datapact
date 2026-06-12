@@ -1,0 +1,83 @@
+From: Aditi Sharma <aditi.sharma@citygov.example.com>
+To: data-team@citygov.example.com
+CC: Priya Nair; Ramesh Iyer
+Subject: RE: RE: RE: Data quality rules for inspection pipeline — FINAL DECISIONS
+Date: 2025-02-10
+
+Team,
+
+Summarising the final agreed decisions from our 3 meetings. Please treat this
+as authoritative for the DQ pipeline build.
+
+AGREED RULES:
+
+1. inspection_sites.site_id
+   - Must be unique across the table
+   - Must match pattern SITE-[0-9]{5}
+   - Must not be NULL
+   - EXCEPTION: The 14 disputed duplicate records from INC-2024-0041 are under
+     legal review. Do not auto-reject them. Flag but do not fail pipeline.
+
+2. inspectors.license_expiry
+   - Must not be NULL for inspectors where is_available = 1
+   - If NULL and is_available = 0, treat as acceptable (suspended/retired)
+   - If license_expiry < GETDATE() and is_available = 1, this is CRITICAL violation
+
+3. inspection_records.overall_status vs score consistency
+   - score >= 85 AND overall_status != 'PASS' → FLAG
+   - score < 60 AND overall_status != 'FAIL' → FLAG
+   - score BETWEEN 60 AND 84 AND overall_status NOT IN ('PASS','PARTIAL') → FLAG
+   - score IS NULL AND overall_status != 'DEFERRED' → FLAG
+
+4. Re: client_sign_off
+   - NULL is acceptable for all records before 2024-01-01
+   - For records from 2024-01-01 onwards, NULL means the digital form was
+     not completed. This should be flagged as WARNING, not ERROR.
+     (Client may have refused to sign — that is a valid scenario)
+
+5. inspector cert_level vs site zone_code
+   - L1 inspector assigned to Zone A or B site → CRITICAL FLAG
+   - L2 inspector assigned to Zone A site → WARNING FLAG
+   - This check requires a JOIN between inspection_records, inspectors,
+     and inspection_sites. Must be a cross-table rule.
+
+6. Row count expectations
+   - inspection_sites: between 5,000 and 50,000 rows
+   - inspectors: between 200 and 2,000 rows
+   - inspection_records: grows by approximately 500-800 rows per week
+     Current total ~85,000. Flag if weekly growth < 100 or > 2,000.
+
+Regards,
+Aditi Sharma
+Compliance Lead, City Governance Division
+
+================================================================
+From: Priya Nair
+Date: 2025-02-07
+
+Adding one more from the QA team's review:
+
+7. inspection_records.inspection_date
+   - Must not be in the future (cannot inspect a site tomorrow)
+   - Must not be more than 2 years in the past for active records
+     (older records should be archived, not in active table)
+   - Must not be NULL
+
+8. inspectors.region_codes
+   - If not NULL, must only contain values from set {A, B, C}
+   - Comma-separated, no spaces, no other characters
+   - Valid: "A" or "A,B" or "A,B,C"
+   - Invalid: "A, B" or "A;B" or "D" or ""
+
+================================================================
+From: Ramesh Iyer
+Date: 2025-02-05
+
+DBA note on cross-table rules:
+The DB has no FK constraints. Any referential integrity rules need to be
+implemented as DQ checks, not DB constraints. We intentionally kept the
+DB constraint-free to allow the ETL to load partial data and clean later.
+The DQ layer IS the constraint enforcement mechanism for this system.
+
+This is important: DataPact rules are not supplementary — they ARE the
+primary data contract enforcement for this warehouse.

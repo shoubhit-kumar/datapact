@@ -1,0 +1,17 @@
+@"
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+.venv/
+local.settings.json
+.python_packages/
+*.key
+*.pem
+secrets/
+.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db
+"@ | Out-File -FilePath .gitignore -Encoding utf8

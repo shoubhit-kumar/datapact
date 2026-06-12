@@ -1,0 +1,27 @@
+site_id,site_name,address_line1,address_line2,city,pincode,zone_code,site_type,constructed_yr,area_sqft,owner_name,owner_contact,is_active,created_at,updated_at
+SITE-00001,Sunrise Towers,14 MG Road,,Mumbai,400001,A,Building,2005,45000.00,Mehta Properties Ltd,9820011234,true,2019-03-12 10:00:00,2024-11-01 09:30:00
+SITE-00002,Green Valley Hospital,Plot 22 Andheri East,,Mumbai,400069,A,Healthcare,1998,82000.00,GVH Trust,greenvalley@hospital.in,true,2019-04-05 11:00:00,2025-01-15 14:20:00
+SITE-00003,Spice Garden Restaurant,Shop 4 Linking Road,Bandra West,Mumbai,400050,B,Food,2015,1200.00,Rajan Nair,rajan.nair@gmail.com,true,2020-01-10 09:00:00,2024-08-20 10:00:00
+SITE-00004,Industrial Cold Storage,Plot 88 MIDC,,Pune,411019,B,Industrial,2001,120000.00,Pune Logistics Pvt Ltd,02012345678,true,2020-03-15 08:30:00,2024-12-10 16:00:00
+SITE-00005,City Heritage Building,1 Fort Area,,Mumbai,,A,Building,1923,30000.00,MCGM,mcgm-heritage@gov.in,true,2019-06-01 10:00:00,2024-09-01 11:00:00
+SITE-00006,Sunrise Towers,14 MG Road,,Mumbai,400001,A,Building,2005,45000.00,Mehta Properties Ltd,9820011234,true,2019-03-12 10:00:00,2024-11-01 09:30:00
+SITE-00007,Westside Mall,Plot 1 Link Road,,Mumbai,400053,B,Building,2010,250000.00,Tata Realty,022-66778899,true,2021-02-20 09:00:00,2025-02-01 13:00:00
+SITE-00008,St. Mary School,16 Hill Road,,Mumbai,400050,B,Building,1965,18000.00,Diocese of Mumbai,9821099900,true,2019-08-10 10:00:00,2024-07-15 09:00:00
+SITE-00009,Pharma Unit 3,MIDC Block C,,Nashik,422010,,Industrial,2018,95000.00,HealthCure Pharma,01234-567890,true,2021-11-05 08:00:00,2025-01-10 10:00:00
+SITE-00010,Kirana Store Patel,Shop 2 Local Market,,Thane,400601,C,Food,2012,400.00,Suresh Patel,suresh_patel@yahoo.com,true,2022-05-12 09:30:00,2024-06-01 10:00:00
+SITE-00001,Sunrise Towers DUPLICATE,14 MG Road,,Mumbai,400001,A,Building,2005,45000.00,Mehta Properties Ltd,9820011234,true,2019-03-12 10:00:00,2024-11-01 09:30:00
+SITE-00011,Abandoned Warehouse,Plot 55,,Pune,411 018,C,Industrial,1887,80000.00,Unknown,,false,2018-01-01 00:00:00,2018-01-01 00:00:00
+SITE-00012,New Food Court,Level 2 Phoenix Mall,,Mumbai,400070,B,Food,2022,8000.00,Phoenix Mills,022-44556677,true,2023-01-15 10:00:00,2025-01-20 09:00:00
+SITE-00013,Chemical Storage Unit,Industrial Estate Block D,,Navi Mumbai,400708,A,Industrial,2000,60000.00,ChemStore India,chemstore@ops.com,true,2020-06-10 08:00:00,2024-10-15 12:00:00
+SITE-00014,Sunrise Clinic,Flat 3 Anand Nagar,,Pune,411007,B,Healthcare,2017,2000.00,Dr. Meera Joshi,9876543210,true,2022-03-01 10:00:00,2025-02-10 11:00:00
+SITE-00015,Heritage Hotel,Watson's Hotel Building,,Mumbai,400001,A,Building,1871,40000.00,Heritage Hotels Ltd,022-22623434,true,2019-05-20 09:00:00,2024-12-01 10:00:00
+SITE-00016,Local Gym Fit Zone,Shop 7 Lokhandwala,,Mumbai,400053,C,Building,2019,3500.00,Fitness World,9833001122,true,2023-07-10 10:00:00,2025-01-05 09:00:00
+SITE-00017,Cold Chain Depot,Warehouse 12 APMC,,Navi Mumbai,400703,B,Industrial,2008,-50.00,APMC Authority,022-27571234,true,2020-09-15 08:30:00,2024-11-20 14:00:00
+SITE-00018,Primary Health Center,Village Panchayat Road,,Raigad,402301,,Healthcare,2010,3000.00,State Health Dept,govt-phc@health.gov.in,true,2021-04-01 09:00:00,2024-08-10 10:00:00
+SITE-00019,Textile Mill Complex,Old Mill Compound,,Mumbai,400013,A,Industrial,1948,350000.00,Bombay Textile Co,9820055678,false,2019-01-15 10:00:00,2022-06-01 09:00:00
+SITE-00020,Quick Bites Canteen,Ground Floor IT Park,,Pune,411057,C,Food,2020,600.00,Sodexo India,sodexo-pune@sodexo.com,true,2023-02-10 10:00:00,2025-02-15 13:00:00
+SITE-00021,Multi Specialty Hospital,Survey No 44,,Pune,411045,A,Healthcare,2014,150000.00,Sahyadri Hospitals,020-67219999,true,2020-08-01 08:00:00,2025-01-30 10:00:00
+SITE-00022,Petrol Bunk HP,NH48 Service Road,,Mumbai,400095,B,Industrial,2003,5000.00,HP India,9870011234,true,2021-01-10 09:00:00,2024-09-20 11:00:00
+SITE-00023,Old Godown,Near Station,,Thane,,C,Industrial,1965,20000.00,Private Owner,,false,2018-06-01 10:00:00,2019-01-01 00:00:00
+SITE-00024,Luxury Apartments Tower A,Hiranandani Gardens,,Mumbai,400076,B,Building,2016,180000.00,Hiranandani Developers,022-25763000,true,2021-05-15 09:00:00,2025-02-01 10:00:00
+SITE-00025,Street Food Stall 14,Juhu Beach Front,,Mumbai,400049,C,Food,2026,50.00,Ramesh Gupta,9821155566,true,2024-01-20 10:00:00,2025-01-20 10:00:00

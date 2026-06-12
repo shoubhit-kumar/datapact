@@ -1,0 +1,120 @@
+MUNICIPAL INSPECTION MANAGEMENT SYSTEM
+ONBOARDING AND DATA DICTIONARY
+Exported from Confluence — Space: MIMS — Last edited: Priya Nair, 2025-02-18
+
+================================================================
+SYSTEM OVERVIEW
+================================================================
+
+The Municipal Inspection Management System (MIMS) tracks all building, food,
+industrial, and healthcare inspections conducted by the City Compliance Division.
+
+The system was originally built in 2018 on a legacy Oracle DB and migrated to
+Azure SQL in 2024. Some data quality issues from the migration are documented
+in the Jira project DEV (see issue log).
+
+Primary users:
+- Field inspectors (mobile app)
+- Supervisors (web dashboard)
+- City compliance officers (reports)
+- Data team (pipelines and analytics)
+
+================================================================
+ZONE CLASSIFICATION
+================================================================
+
+Zone A — High Risk
+  Includes: hospitals, large food processing units, chemical storage,
+  buildings over 20 years old with no recent structural inspection.
+  Inspection frequency: every 90 days mandatory.
+  Overdue threshold: 100 days (10-day grace period).
+
+Zone B — Medium Risk
+  Includes: mid-size commercial buildings, schools, mid-scale food outlets.
+  Inspection frequency: every 180 days.
+  Overdue threshold: 200 days.
+
+Zone C — Low Risk
+  Includes: small shops, residential buildings under 10 years old.
+  Inspection frequency: annually (365 days).
+  Overdue threshold: 400 days.
+
+IMPORTANT: Sites with NULL zone_code were registered before the zone system
+was introduced (pre-2022). They default to Zone B treatment operationally
+but should be formally reclassified. As of Feb 2025, ~3400 sites are
+still unclassified.
+
+================================================================
+INSPECTION SCORING
+================================================================
+
+Score range: 0 to 100.
+- 85 and above: PASS
+- 60 to 84: PARTIAL (subject to re-inspection within 30 days)
+- Below 60: FAIL (immediate action required)
+- NULL: inspection was started but not completed
+
+overall_status must be consistent with score:
+  score >= 85 → PASS
+  score 60-84 → PARTIAL or PASS (inspector discretion for borderline)
+  score < 60  → FAIL
+  score NULL  → DEFERRED (inspection to be rescheduled)
+
+Any record where overall_status contradicts score range is a data quality error.
+
+================================================================
+INSPECTOR LICENSING
+================================================================
+
+All inspectors must hold a valid government license (LIC-YYYY-NNNNNN format).
+License numbers are issued by the State Compliance Authority.
+
+Cert levels and their permissions:
+  L1 — Can inspect Zone C sites only
+  L2 — Can inspect Zone B and Zone C sites
+  L3 — Can inspect any zone
+  SENIOR — Can inspect any zone + can sign off on re-inspections
+
+An inspector assigned to a zone outside their certification level is a
+compliance violation and must be flagged immediately.
+
+License expiry: An inspector with an expired license must not be assigned
+new inspections. The system should check this daily.
+
+================================================================
+KNOWN DATA RELATIONSHIPS (not enforced in DB)
+================================================================
+
+inspection_records.site_id → inspection_sites.site_id
+  Every inspection must be for a registered site.
+  Orphan records (site_id not in inspection_sites) indicate manual entry bypass.
+
+inspection_records.inspector_id → inspectors.inspector_id
+  Every inspection must be conducted by a registered inspector.
+  18 orphan records found in 2024 (see INC-2024-0183).
+
+inspectors.supervisor_id → inspectors.inspector_id
+  Supervisor must also be an inspector in the system.
+  Not all inspectors have a supervisor (senior-most level can be NULL).
+
+================================================================
+BUSINESS RULES ENFORCED IN APPLICATION (not in DB)
+================================================================
+
+1. An inspector cannot inspect a site they own or have a declared conflict of interest with.
+2. A FAIL inspection must have at least 1 critical finding (critical_findings >= 1).
+3. If followup_required = 1, followup_deadline must be within 30 days of inspection_date.
+4. A site with status INACTIVE (is_active = 'false') must not have any new inspections.
+5. report_submitted must be 'Yes' within 48 hours of inspection_date.
+6. score and overall_status must be consistent (see scoring table above).
+7. inspector cert_level must cover the site zone_code at time of inspection.
+
+These rules are enforced by the application layer but NOT by database constraints.
+DataPact should generate DQ rules to catch violations in the data layer.
+
+================================================================
+CONTACTS
+================================================================
+Data Owner: Priya Nair (priya.nair@citygov.example.com)
+DBA: Ramesh Iyer (ramesh.iyer@citygov.example.com)
+Compliance Lead: Aditi Sharma (aditi.sharma@citygov.example.com)

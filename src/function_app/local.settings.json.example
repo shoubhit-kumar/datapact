@@ -1,0 +1,24 @@
+@"
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "SQL_SERVER": "your-server.database.windows.net",
+    "SQL_DATABASE": "your-database",
+    "SQL_USERNAME": "your-username",
+    "SQL_PASSWORD": "your-password",
+    "SQL_DRIVER": "{ODBC Driver 18 for SQL Server}",
+    "OPENAI_ENDPOINT": "https://your-openai.openai.azure.com",
+    "OPENAI_KEY": "your-openai-key",
+    "OPENAI_DEPLOYMENT": "gpt-4-1-mini",
+    "SEARCH_ENDPOINT": "https://your-search.search.windows.net",
+    "SEARCH_KEY": "your-search-key",
+    "SEARCH_INDEX": "datapact-docs",
+    "STORAGE_CONNECTION": "your-storage-connection-string",
+    "DOCINTEL_ENDPOINT": "https://your-docintel.cognitiveservices.azure.com",
+    "DOCINTEL_KEY": "your-docintel-key",
+    "SERVICE_BUS_CONNECTION": "your-servicebus-connection-string"
+  }
+}
+"@ | Out-File -FilePath "src\function_app\local.settings.json.example" -Encoding utf8
